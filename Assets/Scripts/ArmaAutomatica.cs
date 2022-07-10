@@ -2,15 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Arma : MonoBehaviour
+public class ArmaAutomatica : MonoBehaviour
 {
+    // Para tener el lugar y la dirección en que aparece la bala
     public GameObject instanciaBala;
     public Transform cilindro;
 
+    // Velocidad de disparo
     public float fireRate;
 
-    public int disparosRestantes;
+    // Disparos automaticos
+    public bool disparosRestantes;
     public float counter;
+
+
+    public float tiempoDestruccion;
 
 
     // Start is called before the first frame update
@@ -22,27 +28,13 @@ public class Arma : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Z))
         {
-            //Transform cilindro = transform.GetChild(0).gameObject.transform;
-            //instanciaBala.GetComponent<Bala>().setDirection(cilindro.transform);
+            disparosRestantes = !disparosRestantes;
+        }
+        
 
-            Disparo();
-        }
-        else if(Input.GetKeyDown(KeyCode.J))
-        {
-            disparosRestantes += 2;
-        }
-        else if (Input.GetKeyDown(KeyCode.K))
-        {
-            disparosRestantes += 3;
-        }
-        else if (Input.GetKeyDown(KeyCode.L))
-        {
-            disparosRestantes += 4;
-        }
-
-        if(disparosRestantes>0)
+        if(disparosRestantes)
         {
             Disparos();
         }
@@ -56,11 +48,10 @@ public class Arma : MonoBehaviour
     {
         counter -= Time.deltaTime;
 
-        if ((disparosRestantes > 0) && (counter <= 0))
+        if (counter <= 0)
         {
             Disparo();
             reiniciarContador();
-            disparosRestantes--;
         }
 
     }

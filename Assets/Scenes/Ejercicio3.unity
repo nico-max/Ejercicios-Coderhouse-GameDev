@@ -367,6 +367,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   instanciaBala: {fileID: 6239293766680871576, guid: 9b6cd4d21b1819f4ab021cc7ba055d83, type: 3}
   cilindro: {fileID: 869050987}
+  fireRate: 1
+  disparosRestantes: 0
+  counter: 0
 --- !u!1 &1407028295
 GameObject:
   m_ObjectHideFlags: 0
