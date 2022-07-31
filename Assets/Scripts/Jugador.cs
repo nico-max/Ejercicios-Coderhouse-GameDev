@@ -21,6 +21,9 @@ public class Jugador : MonoBehaviour
 
     public Vector3 spawn;
 
+
+    Dictionary<int, GameObject> inventory;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +31,13 @@ public class Jugador : MonoBehaviour
         sentidoHorario = true;
         puntosQueue = new Queue<Vector3>();
         spawn = transform.position;
+
+        GameObject sword = transform.GetChild(1).gameObject;
+        GameObject gun = transform.GetChild(0).gameObject;
+
+        inventory = new Dictionary<int, GameObject>();
+        inventory.Add(1, gun);
+        inventory.Add(2, sword);
     }
 
     // Update is called once per frame
@@ -54,6 +64,19 @@ public class Jugador : MonoBehaviour
 
         ejecutarRutina();
 
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            inventory[2].SetActive(false);
+
+            inventory[1].SetActive(true);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            inventory[1].SetActive(false);
+
+            inventory[2].SetActive(true);
+        }
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -68,7 +91,7 @@ public class Jugador : MonoBehaviour
         }
     }
 
-    
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Torch")
@@ -193,7 +216,7 @@ public class Jugador : MonoBehaviour
 
     void MoverHaciaObjetivo(Vector3 objetivo)
     {
-        transform.position = Vector3.MoveTowards(transform.position, objetivo, speed*2 * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, objetivo, speed * 2 * Time.deltaTime);
 
         Vector3 posObjetivo = new Vector3(objetivo.x, 0, objetivo.z);
 
@@ -203,7 +226,7 @@ public class Jugador : MonoBehaviour
         Quaternion rot = Quaternion.LookRotation(direction);
 
         transform.rotation = new Quaternion(0, rot.y, 0, rot.w);
-       
+
 
     }
 
