@@ -825,6 +825,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6119119561356487228, guid: 9ab7991c9a7dc7d40ba1165cb973dee2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6352911130837874904, guid: 9ab7991c9a7dc7d40ba1165cb973dee2, type: 3}
       propertyPath: camarasFijas
       value: 
@@ -897,6 +901,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6866964251299500574, guid: 9ab7991c9a7dc7d40ba1165cb973dee2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9ab7991c9a7dc7d40ba1165cb973dee2, type: 3}
 --- !u!1 &498469601
@@ -968,7 +976,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 498469601}
-  m_LocalRotation: {x: 0.0083359005, y: 0.9909201, z: -0.11219249, w: 0.07362536}
+  m_LocalRotation: {x: 0.008335886, y: 0.9909201, z: -0.11219249, w: 0.073625244}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
