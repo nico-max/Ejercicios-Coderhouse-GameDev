@@ -13,10 +13,21 @@ public class Jugador : MonoBehaviour
     [SerializeField]
     private int life;
 
+    public Transform[] puntosObjetivo;
+    public bool sentidoHorario;
+    [SerializeField]
+    public Queue<Vector3> puntosQueue;
+    public Vector3 objetivoActual;
+
+    public Vector3 spawn;
+
     // Start is called before the first frame update
     void Start()
     {
         life = 100;
+        sentidoHorario = true;
+        puntosQueue = new Queue<Vector3>();
+        spawn = transform.position;
     }
 
     // Update is called once per frame
@@ -30,23 +41,47 @@ public class Jugador : MonoBehaviour
             ToggleCamera();
         }
 
-        if(life<=0)
+        if (life <= 0)
         {
             Respawn();
             life = 100;
         }
 
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            crearRutina();
+        }
+
+        ejecutarRutina();
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Bala")
+        if (other.gameObject.tag == "Bala")
         {
             Destroy(other.gameObject);
 
             int damage = other.gameObject.GetComponent<Bala>().damage;
 
             life -= damage;
+        }
+    }
+
+    
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Torch")
+        {
+            if (puntosQueue.Count > 0)
+            {
+                objetivoActual = puntosQueue.Dequeue();
+            }
+            else
+            {
+                objetivoActual = Vector3.zero;
+            }
+
         }
     }
 
@@ -64,7 +99,7 @@ public class Jugador : MonoBehaviour
 
     void ToggleCamera()
     {
-        if(camaraJugador.activeInHierarchy)
+        if (camaraJugador.activeInHierarchy)
         {
             camaraJugador.SetActive(false);
             camarasFijas.SetActive(true);
@@ -90,7 +125,7 @@ public class Jugador : MonoBehaviour
 
         float hor = Input.GetAxisRaw("Horizontal");
         transform.Rotate(new Vector3(0, hor, 0) * rotationSpeed * Time.deltaTime);
-        
+
     }
 
     void Rotacion()
@@ -115,7 +150,61 @@ public class Jugador : MonoBehaviour
 
     void Respawn()
     {
-        transform.position = new Vector3(10, 1, 1);
+        transform.position = transform.position;
+    }
+
+
+    public void crearRutina()
+    {
+
+        if (sentidoHorario)
+        {
+            for (int i = 0; i < puntosObjetivo.Length; i++)
+            {
+                puntosQueue.Enqueue(puntosObjetivo[i].position);
+            }
+        }
+        else
+        {
+            for (int i = puntosObjetivo.Length - 1; i >= 0; i--)
+            {
+                puntosQueue.Enqueue(puntosObjetivo[i].position);
+            }
+        }
+
+        puntosQueue.Enqueue(spawn);
+    }
+
+    public void ejecutarRutina()
+    {
+        if (objetivoActual != Vector3.zero && transform.position != objetivoActual)
+        {
+            MoverHaciaObjetivo(objetivoActual);
+        }
+        else if (puntosQueue.Count > 0)
+        {
+            objetivoActual = puntosQueue.Dequeue();
+        }
+        else
+        {
+            objetivoActual = Vector3.zero;
+        }
+    }
+
+    void MoverHaciaObjetivo(Vector3 objetivo)
+    {
+        transform.position = Vector3.MoveTowards(transform.position, objetivo, speed*2 * Time.deltaTime);
+
+        Vector3 posObjetivo = new Vector3(objetivo.x, 0, objetivo.z);
+
+        Vector3 direction = (posObjetivo - transform.position);
+
+        //Quaternion rot = Quaternion.LookRotation(new Vector3(0, direction.y, direction.z));
+        Quaternion rot = Quaternion.LookRotation(direction);
+
+        transform.rotation = new Quaternion(0, rot.y, 0, rot.w);
+       
+
     }
 
 }

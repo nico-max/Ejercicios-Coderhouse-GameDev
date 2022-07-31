@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 6352911130837874910}
   - component: {fileID: 6352911130837874911}
   - component: {fileID: 6352911130837874904}
+  - component: {fileID: 1242981129}
   m_Layer: 0
   m_Name: Jugador
   m_TagString: Untagged
@@ -58,7 +59,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6352911130837874905}
-  m_LocalRotation: {x: -0, y: -0.71050966, z: -0, w: 0.7036875}
+  m_LocalRotation: {x: 0, y: -0.71051097, z: 0, w: 0.7036862}
   m_LocalPosition: {x: 10.18, y: 0.487, z: 1.68}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
@@ -151,6 +152,29 @@ MonoBehaviour:
   camarasFijas: {fileID: 0}
   camaraJugador: {fileID: 0}
   life: 0
+  puntosObjetivo:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  sentidoHorario: 0
+  objetivoActual: {fileID: 0}
+--- !u!54 &1242981129
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6352911130837874905}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
 --- !u!1 &6352911131310127662
 GameObject:
   m_ObjectHideFlags: 0
