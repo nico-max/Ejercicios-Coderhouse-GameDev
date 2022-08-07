@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class GameManager : MonoBehaviour
     {
         if (GameManager._instance == null)
         {
+            DontDestroyOnLoad(gameObject);
             GameManager._instance = this;
         }
         else
@@ -18,8 +20,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void Update()
+    public void Jugar()
     {
-        
+        SceneManager.LoadScene(1);
+    }
+
+    public void salir()
+    {
+        Application.Quit();
     }
 }
