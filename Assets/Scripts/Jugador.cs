@@ -53,8 +53,8 @@ public class Jugador : MonoBehaviour
 
         if (life <= 0)
         {
-            Respawn();
             life = 100;
+            Respawn();
         }
 
         if (Input.GetKeyDown(KeyCode.I))
@@ -88,6 +88,8 @@ public class Jugador : MonoBehaviour
             int damage = other.gameObject.GetComponent<Bala>().damage;
 
             life -= damage;
+
+            UIManager._instance.actualizarVida(life);
         }
     }
 
@@ -173,7 +175,8 @@ public class Jugador : MonoBehaviour
 
     void Respawn()
     {
-        transform.position = transform.position;
+        transform.position = spawn;
+        UIManager._instance.actualizarVida(life);
     }
 
 
