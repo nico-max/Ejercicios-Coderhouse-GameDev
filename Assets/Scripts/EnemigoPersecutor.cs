@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class EnemigoPersecutor : Enemigo
 {
     private enum TipoEnemigo
     {
@@ -10,21 +10,14 @@ public class Enemy : MonoBehaviour
         Persecucion
     }
 
-
     [SerializeField]
     private TipoEnemigo enemyType;
 
-    public GameObject Jugador;
-    public float speedToLook;
-    public float speedMovement;
-
-    public float distanciaMinima;
-
-    public Transform torreta;
-
-    private float velocidadInicial;
-
     public GameObject arma;
+
+    public float speedMovement;
+    private float velocidadInicial;
+    public float distanciaMinima;
 
     void Start()
     {
@@ -34,10 +27,10 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        switch(enemyType)
+        switch (enemyType)
         {
             case TipoEnemigo.Apuntado:
-                ModoApuntado();
+                ApuntarJugador();
                 break;
 
             case TipoEnemigo.Persecucion:
@@ -48,7 +41,7 @@ public class Enemy : MonoBehaviour
 
     void ModoPersecución()
     {
-        if(arma != null)
+        if (arma != null)
         {
             arma.SetActive(false);
         }
@@ -60,7 +53,7 @@ public class Enemy : MonoBehaviour
 
         float distance = (Jugador.transform.position - transform.position).magnitude;
 
-        if(distance <= distanciaMinima)
+        if (distance <= distanciaMinima)
         {
             speedMovement = 0;
         }
@@ -74,18 +67,5 @@ public class Enemy : MonoBehaviour
          * Vector3 direction = (Jugador.transform.position - transform.position).normalized;
          * transform.position += direction * speedMovement * Time.deltaTime;
          */
-    }
-
-    void ModoApuntado()
-    {
-        if (arma != null)
-        {
-            arma.SetActive(true);
-        }
-
-        Quaternion objetivo = Quaternion.LookRotation((Jugador.transform.position - transform.position));
-        transform.rotation = Quaternion.Lerp(transform.rotation, objetivo, speedToLook * Time.deltaTime);
-
-        //torreta.LookAt(Jugador.transform);
     }
 }

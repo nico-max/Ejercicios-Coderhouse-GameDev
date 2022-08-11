@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class Arma : MonoBehaviour
 {
+    public TipoArma _tArma;
+
     public GameObject instanciaBala;
     public Transform cilindro;
 
     public float fireRate;
     public float reloadTime;
+    public int tamCargador;
 
     public int disparosRestantes;
     public float counter;
@@ -19,21 +22,40 @@ public class Arma : MonoBehaviour
     void Start()
     {
         recargando = false;
+        fireRate = _tArma.fireRate;
+        reloadTime = _tArma.tiempoRecarga;
+        tamCargador = _tArma.cargador;
+        disparosRestantes = _tArma.cargador;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if(_tArma.automatica)
         {
-            //Transform cilindro = transform.GetChild(0).gameObject.transform;
-            //instanciaBala.GetComponent<Bala>().setDirection(cilindro.transform);
+            if (Input.GetKey(KeyCode.Mouse0))
+            {
+                //Transform cilindro = transform.GetChild(0).gameObject.transform;
+                //instanciaBala.GetComponent<Bala>().setDirection(cilindro.transform);
 
-            Disparo();
+                Disparo();
+            }
         }
-        else if(Input.GetKeyDown(KeyCode.R))
+        else
         {
-            if(disparosRestantes < 6)
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                //Transform cilindro = transform.GetChild(0).gameObject.transform;
+                //instanciaBala.GetComponent<Bala>().setDirection(cilindro.transform);
+
+                Disparo();
+            }
+        }
+
+
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            if(disparosRestantes < tamCargador)
             {
                 counter = reloadTime;
                 recargando = true;
@@ -130,6 +152,6 @@ public class Arma : MonoBehaviour
 
     void Recargar()
     {
-        disparosRestantes = 6;
+        disparosRestantes = tamCargador;
     }
 }

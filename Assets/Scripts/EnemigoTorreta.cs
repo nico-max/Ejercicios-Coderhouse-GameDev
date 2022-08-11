@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TorretaAutomatica : MonoBehaviour
+public class EnemigoTorreta : Enemigo
 {
     private enum TipoEnemigo
     {
@@ -11,25 +11,15 @@ public class TorretaAutomatica : MonoBehaviour
         Calentando
     }
 
-
     [SerializeField]
     private TipoEnemigo enemyType;
 
     [SerializeField]
     private Animator anim;
 
-    public GameObject Jugador;
-    public GameObject InstanciaBala;
-
-    public Transform cilindro;
-
-    public float speedToLook;
-
-
     float counterDisparos;
     float counterCooldown;
     float counterCalentamiento;
-
 
     float cooldownDisparo;
     float tiempoCalentamiento;
@@ -38,20 +28,20 @@ public class TorretaAutomatica : MonoBehaviour
     int rafagas = 10;
     int disparosRestantes;
 
-    private void Start()
+    void Start()
     {
-        //anim = GetComponent<Animator>();
-
         enemyType = TipoEnemigo.Calentando;
 
         cooldownDisparo = 5f;
         tiempoCalentamiento = 3f;
         cadenciaDisparo = 0.5f;
-
     }
 
+    // Update is called once per frame
     void Update()
     {
+        ApuntarJugador();
+
         switch (enemyType)
         {
             case TipoEnemigo.Apuntado:
@@ -70,28 +60,26 @@ public class TorretaAutomatica : MonoBehaviour
 
     void ModoApuntado()
     {
-        ApuntarJugador();
 
         anim.SetBool("Disparando", false);
 
-        if(counterCooldown<=0)
+        if (counterCooldown <= 0)
         {
             enemyType = TipoEnemigo.Calentando;
             reiniciarContadorCalentamiento();
         }
         else
         {
-            counterCooldown  -= Time.deltaTime;
+            counterCooldown -= Time.deltaTime;
         }
     }
 
     void ModoCalentar()
     {
-        ApuntarJugador();
 
         anim.SetBool("Disparando", true);
 
-        if(counterCalentamiento<=0)
+        if (counterCalentamiento <= 0)
         {
             enemyType = TipoEnemigo.Disparando;
             reiniciarContadorDisparos();
@@ -105,10 +93,9 @@ public class TorretaAutomatica : MonoBehaviour
 
     void ModoDisparar()
     {
-        ApuntarJugador();
 
         anim.SetBool("Disparando", true);
-        
+
         Disparos();
     }
 
@@ -122,7 +109,7 @@ public class TorretaAutomatica : MonoBehaviour
             reiniciarContadorDisparos();
             disparosRestantes--;
         }
-        else if(disparosRestantes<=0)
+        else if (disparosRestantes <= 0)
         {
             enemyType = TipoEnemigo.Apuntado;
             reiniciarContadorCooldown();
@@ -153,13 +140,5 @@ public class TorretaAutomatica : MonoBehaviour
     void recargarArma()
     {
         disparosRestantes = rafagas;
-    }
-
-    void ApuntarJugador()
-    {
-        Quaternion objetivo = Quaternion.LookRotation((Jugador.transform.position - transform.position));
-        transform.rotation = Quaternion.Lerp(transform.rotation, objetivo, speedToLook * Time.deltaTime);
-
-        //torreta.LookAt(Jugador.transform);
     }
 }
