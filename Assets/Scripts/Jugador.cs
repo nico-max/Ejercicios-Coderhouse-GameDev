@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 
 public class Jugador : MonoBehaviour
 {
@@ -21,6 +22,11 @@ public class Jugador : MonoBehaviour
 
     public Vector3 spawn;
 
+    public bool apuntando;
+    public PostProcessVolume _volume;
+    private Vignette _vignette;
+    public Cinemachine.CinemachineFreeLook _camera;
+
 
     Dictionary<int, GameObject> inventory;
 
@@ -38,6 +44,10 @@ public class Jugador : MonoBehaviour
         inventory = new Dictionary<int, GameObject>();
         inventory.Add(1, gun);
         inventory.Add(2, sword);
+
+        apuntando = false;
+
+        _volume.profile.TryGetSettings(out _vignette);
     }
 
     // Update is called once per frame
@@ -45,6 +55,7 @@ public class Jugador : MonoBehaviour
     {
         Movimiento();
         controlRotationSpeed();
+        CambioArmas();
 
         if (Input.GetKeyDown(KeyCode.C))
         {
@@ -64,19 +75,7 @@ public class Jugador : MonoBehaviour
 
         ejecutarRutina();
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            inventory[2].SetActive(false);
-
-            inventory[1].SetActive(true);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            inventory[1].SetActive(false);
-
-            inventory[2].SetActive(true);
-        }
-
+        ControlApuntado();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -107,6 +106,42 @@ public class Jugador : MonoBehaviour
                 objetivoActual = Vector3.zero;
             }
 
+        }
+    }
+
+    void ControlApuntado()
+    {
+        if(Input.GetMouseButtonDown(1))
+        {
+            if(apuntando)
+            {
+                apuntando = false;
+                _camera.m_Lens.FieldOfView = 40;
+                _vignette.intensity.value = 0;
+            }
+            else
+            {
+                apuntando = true;
+                _camera.m_Lens.FieldOfView = 30;
+                _vignette.intensity.value = 1;
+            }
+            
+        }
+    }
+
+    void CambioArmas()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            inventory[2].SetActive(false);
+
+            inventory[1].SetActive(true);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            inventory[1].SetActive(false);
+
+            inventory[2].SetActive(true);
         }
     }
 
@@ -203,6 +238,12 @@ public class Jugador : MonoBehaviour
 
     public void ejecutarRutina()
     {
+        /**
+         * 
+         * 
+         * 
+        **/
+
         if (objetivoActual != Vector3.zero && transform.position != objetivoActual)
         {
             MoverHaciaObjetivo(objetivoActual);
